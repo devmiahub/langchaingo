@@ -17,6 +17,8 @@ type GoogleAI struct {
 	client           *genai.Client
 	opts             Options
 	model            string // Track current model for reasoning detection
+	apiKey           string // Store API key for REST client
+	restClient       *Gemini3RestClient // REST client for Gemini 3 models
 }
 
 var (
@@ -33,8 +35,14 @@ func New(ctx context.Context, opts ...Option) (*GoogleAI, error) {
 	clientOptions.EnsureAuthPresent()
 
 	gi := &GoogleAI{
-		opts:  clientOptions,
-		model: clientOptions.DefaultModel, // Store the default model
+		opts:   clientOptions,
+		model:  clientOptions.DefaultModel, // Store the default model
+		apiKey: clientOptions.APIKey,       // Store API key for REST client
+	}
+
+	// Create REST client for Gemini 3 models (requires thought signatures)
+	if gi.apiKey != "" {
+		gi.restClient = NewGemini3RestClient(gi.apiKey)
 	}
 
 	client, err := genai.NewClient(ctx, clientOptions.ClientOptions...)

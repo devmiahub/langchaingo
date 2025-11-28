@@ -64,8 +64,18 @@ type AIChatMessage struct {
 	// ToolCalls represents the model choosing to call tools.
 	ToolCalls []ToolCall `json:"tool_calls,omitempty"`
 
-	// This field is only used with the deepseek-reasoner model and represents the reasoning contents of the assistant message before the final answer.
+	// ReasoningContent is used with deepseek-reasoner model and represents
+	// the reasoning contents of the assistant message before the final answer.
 	ReasoningContent string `json:"reasoning_content,omitempty"`
+
+	// ThinkingContent contains the model's thinking/reasoning text.
+	// Used by Gemini 3.0 and other models that support extended thinking.
+	ThinkingContent string `json:"thinking_content,omitempty"`
+
+	// ThoughtSignature is an opaque verification token for Gemini 3.0 thinking.
+	// This must be persisted and returned in subsequent API calls to validate
+	// the reasoning context in multi-turn conversations.
+	ThoughtSignature string `json:"thought_signature,omitempty"`
 }
 
 func (m AIChatMessage) GetType() ChatMessageType       { return ChatMessageTypeAI }

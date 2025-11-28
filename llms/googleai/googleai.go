@@ -64,6 +64,19 @@ func (g *GoogleAI) GenerateContent(
 		g.model = effectiveModel
 	}
 
+	// Use REST client for Gemini 3 models when tools are involved
+	// (required for thought signature support in function calling)
+	if g.restClient != nil && IsGemini3Model(effectiveModel) && (len(opts.Tools) > 0 || hasToolCalls(messages)) {
+		response, err := g.restClient.GenerateContent(ctx, effectiveModel, messages, &opts)
+		if err != nil {
+			return nil, err
+		}
+		if g.CallbacksHandler != nil {
+			g.CallbacksHandler.HandleLLMGenerateContentEnd(ctx, response)
+		}
+		return response, nil
+	}
+
 	model := g.client.GenerativeModel(opts.Model)
 	model.SetCandidateCount(int32(opts.CandidateCount))
 	model.SetMaxOutputTokens(int32(opts.MaxTokens))
@@ -575,4 +588,18 @@ func showContent(w io.Writer, cs []*genai.Content) {
 			}
 		}
 	}
+}
+
+// hasToolCalls checks if any message contains tool calls or tool call responses.
+// This is used to determine if we need to use the REST API for Gemini 3 models.
+func hasToolCalls(messages []llms.MessageContent) bool {
+	for _, msg := range messages {
+		for _, part := range msg.Parts {
+			switch part.(type) {
+			case llms.ToolCall, llms.ToolCallResponse:
+				return true
+			}
+		}
+	}
+	return false
 }

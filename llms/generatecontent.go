@@ -102,6 +102,10 @@ type ToolCall struct {
 	Type string `json:"type"`
 	// FunctionCall is the function call to be executed.
 	FunctionCall *FunctionCall `json:"function,omitempty"`
+	// ThoughtSignature is an opaque verification token for Gemini 3.0 thinking.
+	// When present, this must be included when sending tool call responses back
+	// to the model. Required for Gemini 3 Pro function calling.
+	ThoughtSignature string `json:"thought_signature,omitempty"`
 }
 
 func (ToolCall) isPart() {}
@@ -117,6 +121,33 @@ type ToolCallResponse struct {
 }
 
 func (ToolCallResponse) isPart() {}
+
+// ThinkingContent represents the model's thinking/reasoning with an optional
+// verification signature. Used by Gemini 3.0 and similar models.
+type ThinkingContent struct {
+	// Thinking is the model's reasoning/thinking text.
+	Thinking string `json:"thinking"`
+	// Signature is the opaque verification token that must be returned
+	// in subsequent API calls to validate the reasoning context.
+	Signature string `json:"signature,omitempty"`
+}
+
+func (ThinkingContent) isPart() {}
+
+func (tc ThinkingContent) String() string {
+	return tc.Thinking
+}
+
+// ThinkingPart creates a new ThinkingContent with the given thinking text.
+func ThinkingPart(thinking string) ThinkingContent {
+	return ThinkingContent{Thinking: thinking}
+}
+
+// ThinkingPartWithSignature creates a new ThinkingContent with thinking text
+// and a verification signature.
+func ThinkingPartWithSignature(thinking, signature string) ThinkingContent {
+	return ThinkingContent{Thinking: thinking, Signature: signature}
+}
 
 // ContentResponse is the response returned by a GenerateContent call.
 // It can potentially return multiple content choices.
@@ -144,8 +175,18 @@ type ContentChoice struct {
 	// ToolCalls is a list of tool calls the model asks to invoke.
 	ToolCalls []ToolCall
 
-	// This field is only used with the deepseek-reasoner model and represents the reasoning contents of the assistant message before the final answer.
+	// ReasoningContent is used with deepseek-reasoner model and represents
+	// the reasoning contents of the assistant message before the final answer.
 	ReasoningContent string
+
+	// ThinkingContent contains the model's thinking/reasoning text.
+	// Used by Gemini 3.0 and other models that support extended thinking.
+	ThinkingContent string
+
+	// ThoughtSignature is an opaque verification token for Gemini 3.0 thinking.
+	// This must be persisted and returned in subsequent API calls to validate
+	// the reasoning context in multi-turn conversations.
+	ThoughtSignature string
 }
 
 // TextParts is a helper function to create a MessageContent with a role and a
@@ -179,6 +220,8 @@ func ShowMessageContents(w io.Writer, msgs []MessageContent) {
 				fmt.Fprintf(w, "ToolCall ID=%v, Type=%v, Func=%v(%v)\n", pp.ID, pp.Type, pp.FunctionCall.Name, pp.FunctionCall.Arguments)
 			case ToolCallResponse:
 				fmt.Fprintf(w, "ToolCallResponse ID=%v, Name=%v, Content=%v\n", pp.ToolCallID, pp.Name, pp.Content)
+			case ThinkingContent:
+				fmt.Fprintf(w, "ThinkingContent Thinking=%q, Signature=%q\n", pp.Thinking, pp.Signature)
 			default:
 				fmt.Fprintf(w, "unknown type %T\n", pp)
 			}

@@ -54,6 +54,10 @@ func (mc *MessageContent) UnmarshalJSON(data []byte) error {
 				Name       string `json:"name"`
 				Content    string `json:"content"`
 			} `json:"tool_response"`
+			Thinking struct {
+				Thinking  string `json:"thinking"`
+				Signature string `json:"signature,omitempty"`
+			} `json:"thinking,omitempty"`
 		} `json:"parts"`
 	}
 	if err := json.Unmarshal(data, &m); err != nil {
@@ -87,6 +91,11 @@ func (mc *MessageContent) UnmarshalJSON(data []byte) error {
 				ToolCallID: part.ToolResponse.ToolCallID,
 				Name:       part.ToolResponse.Name,
 				Content:    part.ToolResponse.Content,
+			})
+		case "thinking":
+			mc.Parts = append(mc.Parts, ThinkingContent{
+				Thinking:  part.Thinking.Thinking,
+				Signature: part.Thinking.Signature,
 			})
 		default:
 			return fmt.Errorf("unknown content type: '%s'", part.Type)
@@ -298,5 +307,44 @@ func (tc *ToolCallResponse) UnmarshalJSON(data []byte) error {
 	tc.ToolCallID = toolCallID
 	tc.Name = name
 	tc.Content = content
+	return nil
+}
+
+func (tc ThinkingContent) MarshalJSON() ([]byte, error) {
+	m := struct {
+		Type     string            `json:"type"`
+		Thinking map[string]string `json:"thinking"`
+	}{
+		Type: "thinking",
+		Thinking: map[string]string{
+			"thinking": tc.Thinking,
+		},
+	}
+	if tc.Signature != "" {
+		m.Thinking["signature"] = tc.Signature
+	}
+	return json.Marshal(m)
+}
+
+func (tc *ThinkingContent) UnmarshalJSON(data []byte) error {
+	var m map[string]any
+	if err := json.Unmarshal(data, &m); err != nil {
+		return err
+	}
+	if m["type"] != "thinking" {
+		return fmt.Errorf("invalid type for ThinkingContent: %v", m["type"])
+	}
+	thinking, ok := m["thinking"].(map[string]any)
+	if !ok {
+		return fmt.Errorf("invalid thinking field in ThinkingContent")
+	}
+	thinkingText, ok := thinking["thinking"].(string)
+	if !ok {
+		return fmt.Errorf("invalid thinking text field in ThinkingContent")
+	}
+	tc.Thinking = thinkingText
+	if sig, ok := thinking["signature"].(string); ok {
+		tc.Signature = sig
+	}
 	return nil
 }

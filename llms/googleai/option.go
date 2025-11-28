@@ -25,6 +25,10 @@ type Options struct {
 	HarmThreshold         HarmBlockThreshold
 
 	ClientOptions []option.ClientOption
+
+	// APIKey stores the API key separately for REST client usage
+	// (needed for Gemini 3 thought signature support)
+	APIKey string
 }
 
 func DefaultOptions() Options {
@@ -49,6 +53,12 @@ func (o *Options) EnsureAuthPresent() {
 			WithAPIKey(key)(o)
 		}
 	}
+	// Also ensure API key is stored separately if present in env but not set via WithAPIKey
+	if o.APIKey == "" {
+		if key := os.Getenv("GOOGLE_API_KEY"); key != "" {
+			o.APIKey = key
+		}
+	}
 }
 
 type Option func(*Options)
@@ -57,6 +67,7 @@ type Option func(*Options)
 // googleai clients.
 func WithAPIKey(apiKey string) Option {
 	return func(opts *Options) {
+		opts.APIKey = apiKey // Store for REST client
 		opts.ClientOptions = append(opts.ClientOptions, option.WithAPIKey(apiKey))
 	}
 }

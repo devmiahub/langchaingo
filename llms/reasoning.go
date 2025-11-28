@@ -190,6 +190,13 @@ func DefaultIsReasoningModel(model string) bool {
 		return true
 	}
 
+	// Google Gemini reasoning models (2.0+ with thinking, 3.0+)
+	if strings.Contains(modelLower, "gemini-2.0") ||
+		strings.Contains(modelLower, "gemini-3") ||
+		(strings.Contains(modelLower, "gemini") && strings.Contains(modelLower, "thinking")) {
+		return true
+	}
+
 	return false
 }
 
