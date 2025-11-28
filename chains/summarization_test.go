@@ -7,11 +7,11 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/tmc/langchaingo/documentloaders"
-	"github.com/tmc/langchaingo/internal/httprr"
-	"github.com/tmc/langchaingo/llms/openai"
-	"github.com/tmc/langchaingo/schema"
-	"github.com/tmc/langchaingo/textsplitter"
+	"github.com/devmiahub/langchaingo/documentloaders"
+	"github.com/devmiahub/langchaingo/internal/httprr"
+	"github.com/devmiahub/langchaingo/llms/openai"
+	"github.com/devmiahub/langchaingo/schema"
+	"github.com/devmiahub/langchaingo/textsplitter"
 )
 
 func loadTestData(t *testing.T) []schema.Document {

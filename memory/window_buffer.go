@@ -3,8 +3,8 @@ package memory
 import (
 	"context"
 
-	"github.com/tmc/langchaingo/llms"
-	"github.com/tmc/langchaingo/schema"
+	"github.com/devmiahub/langchaingo/llms"
+	"github.com/devmiahub/langchaingo/schema"
 )
 
 const (

@@ -9,7 +9,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/tmc/langchaingo/llms"
+	"github.com/devmiahub/langchaingo/llms"
 )
 
 // Gemini3RestClient provides REST API access for Gemini 3 models that require

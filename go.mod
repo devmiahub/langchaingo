@@ -1,4 +1,4 @@
-module github.com/tmc/langchaingo
+module github.com/devmiahub/langchaingo
 
 go 1.24.4
 
@@ -374,3 +374,5 @@ require (
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 	k8s.io/apimachinery v0.28.6 // indirect
 )
+
+replace github.com/tmc/langchaingo => ./

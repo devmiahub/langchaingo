@@ -23,8 +23,8 @@
 //		"context"
 //		"log"
 //
-//		"github.com/tmc/langchaingo/llms"
-//		"github.com/tmc/langchaingo/llms/openai"
+//		"github.com/devmiahub/langchaingo/llms"
+//		"github.com/devmiahub/langchaingo/llms/openai"
 //	)
 //
 //	ctx := context.Background()
@@ -40,9 +40,9 @@
 // Creating embeddings and using vector search:
 //
 //	import (
-//		"github.com/tmc/langchaingo/embeddings"
-//		"github.com/tmc/langchaingo/schema"
-//		"github.com/tmc/langchaingo/vectorstores/chroma"
+//		"github.com/devmiahub/langchaingo/embeddings"
+//		"github.com/devmiahub/langchaingo/schema"
+//		"github.com/devmiahub/langchaingo/vectorstores/chroma"
 //	)
 //
 //	// Create an embedder
@@ -70,8 +70,8 @@
 // Building a chain for question answering:
 //
 //	import (
-//		"github.com/tmc/langchaingo/chains"
-//		"github.com/tmc/langchaingo/vectorstores"
+//		"github.com/devmiahub/langchaingo/chains"
+//		"github.com/devmiahub/langchaingo/vectorstores"
 //	)
 //
 //	chain := chains.NewRetrievalQAFromLLM(
@@ -121,9 +121,9 @@
 // Create agents that can use tools to accomplish complex tasks:
 //
 //	import (
-//		"github.com/tmc/langchaingo/agents"
-//		"github.com/tmc/langchaingo/tools/serpapi"
-//		"github.com/tmc/langchaingo/tools/calculator"
+//		"github.com/devmiahub/langchaingo/agents"
+//		"github.com/devmiahub/langchaingo/tools/serpapi"
+//		"github.com/devmiahub/langchaingo/tools/calculator"
 //	)
 //
 //	// Create tools
@@ -144,8 +144,8 @@
 // Maintain conversation context across multiple interactions:
 //
 //	import (
-//		"github.com/tmc/langchaingo/memory"
-//		"github.com/tmc/langchaingo/chains"
+//		"github.com/devmiahub/langchaingo/memory"
+//		"github.com/devmiahub/langchaingo/chains"
 //	)
 //
 //	// Create memory
@@ -210,7 +210,7 @@
 //
 // LangchainGo provides standardized error handling:
 //
-//	import "github.com/tmc/langchaingo/llms"
+//	import "github.com/devmiahub/langchaingo/llms"
 //
 //	if err != nil {
 //		if llms.IsAuthenticationError(err) {
@@ -226,7 +226,7 @@
 // LangchainGo includes comprehensive testing utilities including HTTP record/replay for internal tests.
 // The httprr package provides deterministic testing of HTTP interactions:
 //
-//	import "github.com/tmc/langchaingo/internal/httprr"
+//	import "github.com/devmiahub/langchaingo/internal/httprr"
 //
 //	func TestMyFunction(t *testing.T) {
 //		rr := httprr.OpenForTest(t, http.DefaultTransport)

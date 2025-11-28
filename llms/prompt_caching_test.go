@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/tmc/langchaingo/llms"
+	"github.com/devmiahub/langchaingo/llms"
 )
 
 func TestWithCacheControl(t *testing.T) {

@@ -16,13 +16,13 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	tclog "github.com/testcontainers/testcontainers-go/log"
 	tcmilvus "github.com/testcontainers/testcontainers-go/modules/milvus"
-	"github.com/tmc/langchaingo/embeddings"
-	"github.com/tmc/langchaingo/internal/httprr"
-	"github.com/tmc/langchaingo/internal/testutil/testctr"
-	"github.com/tmc/langchaingo/llms"
-	"github.com/tmc/langchaingo/llms/openai"
-	"github.com/tmc/langchaingo/schema"
-	"github.com/tmc/langchaingo/vectorstores"
+	"github.com/devmiahub/langchaingo/embeddings"
+	"github.com/devmiahub/langchaingo/internal/httprr"
+	"github.com/devmiahub/langchaingo/internal/testutil/testctr"
+	"github.com/devmiahub/langchaingo/llms"
+	"github.com/devmiahub/langchaingo/llms/openai"
+	"github.com/devmiahub/langchaingo/schema"
+	"github.com/devmiahub/langchaingo/vectorstores"
 )
 
 // createOpenAIEmbedder creates an OpenAI embedder with httprr support for testing.

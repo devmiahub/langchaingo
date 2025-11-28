@@ -10,8 +10,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/tmc/langchaingo/llms"
-	"github.com/tmc/langchaingo/llms/anthropic"
+	"github.com/devmiahub/langchaingo/llms"
+	"github.com/devmiahub/langchaingo/llms/anthropic"
 )
 
 // Define some tools for the model to use

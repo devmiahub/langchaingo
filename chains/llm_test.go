@@ -9,12 +9,12 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/tmc/langchaingo/callbacks"
-	"github.com/tmc/langchaingo/httputil"
-	"github.com/tmc/langchaingo/internal/httprr"
-	"github.com/tmc/langchaingo/llms/googleai"
-	"github.com/tmc/langchaingo/llms/openai"
-	"github.com/tmc/langchaingo/prompts"
+	"github.com/devmiahub/langchaingo/callbacks"
+	"github.com/devmiahub/langchaingo/httputil"
+	"github.com/devmiahub/langchaingo/internal/httprr"
+	"github.com/devmiahub/langchaingo/llms/googleai"
+	"github.com/devmiahub/langchaingo/llms/openai"
+	"github.com/devmiahub/langchaingo/prompts"
 )
 
 // hasExistingRecording checks if a httprr recording exists for this test

@@ -9,12 +9,12 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/tmc/langchaingo/embeddings"
-	"github.com/tmc/langchaingo/internal/httprr"
-	"github.com/tmc/langchaingo/llms/openai"
-	"github.com/tmc/langchaingo/schema"
-	"github.com/tmc/langchaingo/util/alloydbutil"
-	"github.com/tmc/langchaingo/vectorstores/alloydb"
+	"github.com/devmiahub/langchaingo/embeddings"
+	"github.com/devmiahub/langchaingo/internal/httprr"
+	"github.com/devmiahub/langchaingo/llms/openai"
+	"github.com/devmiahub/langchaingo/schema"
+	"github.com/devmiahub/langchaingo/util/alloydbutil"
+	"github.com/devmiahub/langchaingo/vectorstores/alloydb"
 )
 
 type EnvVariables struct {

@@ -6,9 +6,9 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/tmc/langchaingo/callbacks"
-	"github.com/tmc/langchaingo/llms"
-	"github.com/tmc/langchaingo/llms/openai/internal/openaiclient"
+	"github.com/devmiahub/langchaingo/callbacks"
+	"github.com/devmiahub/langchaingo/llms"
+	"github.com/devmiahub/langchaingo/llms/openai/internal/openaiclient"
 )
 
 type ChatMessage = openaiclient.ChatMessage

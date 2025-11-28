@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/tmc/langchaingo/internal/sliceutil"
+	"github.com/devmiahub/langchaingo/internal/sliceutil"
 )
 
 // NewEmbedder creates a new Embedder from the given EmbedderClient, with

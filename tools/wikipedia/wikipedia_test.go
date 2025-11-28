@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/tmc/langchaingo/internal/httprr"
+	"github.com/devmiahub/langchaingo/internal/httprr"
 )
 
 const _userAgent = "langchaingo test (https://github.com/tmc/langchaingo)"

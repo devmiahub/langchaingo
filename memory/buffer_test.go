@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/tmc/langchaingo/llms"
-	"github.com/tmc/langchaingo/schema"
+	"github.com/devmiahub/langchaingo/llms"
+	"github.com/devmiahub/langchaingo/schema"
 )
 
 func TestBufferMemory(t *testing.T) {
