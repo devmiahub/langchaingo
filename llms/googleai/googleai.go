@@ -9,9 +9,9 @@ import (
 	"io"
 	"strings"
 
-	"github.com/google/generative-ai-go/genai"
 	"github.com/devmiahub/langchaingo/internal/imageutil"
 	"github.com/devmiahub/langchaingo/llms"
+	"github.com/google/generative-ai-go/genai"
 	"google.golang.org/api/iterator"
 )
 
@@ -252,6 +252,11 @@ func convertParts(parts []llms.ContentPart) ([]genai.Part, error) {
 				Response: map[string]any{
 					"response": p.Content,
 				},
+			}
+		case llms.FileContent:
+			out = genai.FileData{
+				MIMEType: p.MIMEType,
+				URI:      p.URI,
 			}
 		}
 

@@ -4,6 +4,7 @@ go.work.sum
 # Test outputs
 coverage.out
 cover.cov
+.kiro
 
 # macOS Specific
 .DS_Store

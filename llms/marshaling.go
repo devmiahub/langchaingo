@@ -43,6 +43,10 @@ func (mc *MessageContent) UnmarshalJSON(data []byte) error {
 				Data     string `json:"data"`
 				MIMEType string `json:"mime_type"`
 			} `json:"binary,omitempty"`
+			FileData struct {
+				MIMEType string `json:"mime_type"`
+				URI      string `json:"uri"`
+			} `json:"file_data,omitempty"`
 			ID       string `json:"id"`
 			ToolCall struct {
 				ID           string        `json:"id"`
@@ -96,6 +100,11 @@ func (mc *MessageContent) UnmarshalJSON(data []byte) error {
 			mc.Parts = append(mc.Parts, ThinkingContent{
 				Thinking:  part.Thinking.Thinking,
 				Signature: part.Thinking.Signature,
+			})
+		case "file_data":
+			mc.Parts = append(mc.Parts, FileContent{
+				MIMEType: part.FileData.MIMEType,
+				URI:      part.FileData.URI,
 			})
 		default:
 			return fmt.Errorf("unknown content type: '%s'", part.Type)
@@ -324,6 +333,45 @@ func (tc ThinkingContent) MarshalJSON() ([]byte, error) {
 		m.Thinking["signature"] = tc.Signature
 	}
 	return json.Marshal(m)
+}
+
+func (fc FileContent) MarshalJSON() ([]byte, error) {
+	m := struct {
+		Type     string            `json:"type"`
+		FileData map[string]string `json:"file_data"`
+	}{
+		Type: "file_data",
+		FileData: map[string]string{
+			"mime_type": fc.MIMEType,
+			"uri":       fc.URI,
+		},
+	}
+	return json.Marshal(m)
+}
+
+func (fc *FileContent) UnmarshalJSON(data []byte) error {
+	var m map[string]any
+	if err := json.Unmarshal(data, &m); err != nil {
+		return err
+	}
+	if m["type"] != "file_data" {
+		return fmt.Errorf("invalid type for FileContent: %v", m["type"])
+	}
+	fileData, ok := m["file_data"].(map[string]any)
+	if !ok {
+		return fmt.Errorf("invalid file_data field in FileContent")
+	}
+	mimeType, ok := fileData["mime_type"].(string)
+	if !ok {
+		return fmt.Errorf("invalid mime_type field in FileContent")
+	}
+	uri, ok := fileData["uri"].(string)
+	if !ok {
+		return fmt.Errorf("invalid uri field in FileContent")
+	}
+	fc.MIMEType = mimeType
+	fc.URI = uri
+	return nil
 }
 
 func (tc *ThinkingContent) UnmarshalJSON(data []byte) error {

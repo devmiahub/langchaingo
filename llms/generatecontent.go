@@ -86,6 +86,24 @@ func (bc BinaryContent) String() string {
 
 func (BinaryContent) isPart() {}
 
+// FileContent represents a file stored externally (e.g., Google GenAI File API).
+// It contains only the URI and MIME type, without loading file bytes into memory.
+type FileContent struct {
+	MIMEType string `json:"mime_type"`
+	URI      string `json:"uri"`
+}
+
+func (fc FileContent) String() string {
+	return fc.URI
+}
+
+func (FileContent) isPart() {}
+
+// FilePart creates a new FileContent from the given MIME type and URI.
+func FilePart(mime, uri string) FileContent {
+	return FileContent{MIMEType: mime, URI: uri}
+}
+
 // FunctionCall is the name and arguments of a function call.
 type FunctionCall struct {
 	// The name of the function to call.
@@ -222,6 +240,8 @@ func ShowMessageContents(w io.Writer, msgs []MessageContent) {
 				fmt.Fprintf(w, "ToolCallResponse ID=%v, Name=%v, Content=%v\n", pp.ToolCallID, pp.Name, pp.Content)
 			case ThinkingContent:
 				fmt.Fprintf(w, "ThinkingContent Thinking=%q, Signature=%q\n", pp.Thinking, pp.Signature)
+			case FileContent:
+				fmt.Fprintf(w, "FileContent MIME=%q, URI=%q\n", pp.MIMEType, pp.URI)
 			default:
 				fmt.Fprintf(w, "unknown type %T\n", pp)
 			}
